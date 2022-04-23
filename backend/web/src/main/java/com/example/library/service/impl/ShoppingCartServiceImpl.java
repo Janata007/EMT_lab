@@ -12,10 +12,12 @@ import com.example.library.service.exceptions.BookAlreadyInShoppingCartException
 import com.example.library.service.exceptions.ShoppingCartNotFoundException;
 import com.example.library.service.exceptions.UserNotFoundException;
 import com.example.library.web.exceptions.BookNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final ShoppingCartRepository shoppingCartRepository;
     private final UserRepository userRepository;
