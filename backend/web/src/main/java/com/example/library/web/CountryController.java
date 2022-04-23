@@ -3,20 +3,16 @@ package com.example.library.web;
 import com.example.library.models.Country;
 import com.example.library.service.CountryService;
 import com.example.library.web.exceptions.CountryNotFoundException;
-import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/countryApi")
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/api")
 public class CountryController {
     private final CountryService countryService;
 
@@ -30,7 +26,7 @@ public class CountryController {
         return new ResponseEntity<>(countries, HttpStatus.OK);
     }
 
-    @GetMapping("/pagination")
+    @GetMapping("/countries/pagination")
     public List<Country> getAllCountriesWithPagination(Pageable pageable) {
         return this.countryService.findAllWithPagination(pageable).getContent();
     }
