@@ -1,17 +1,16 @@
 package com.example.library.models;
 
 import com.example.library.models.enums.CategoryEnum;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "book")
 @AllArgsConstructor
@@ -27,12 +26,23 @@ public class Book {
     private CategoryEnum category;
     @ManyToOne
     private Author author;
-    private int availableCopies;
+    private int copies;
 
-    public Book(String name, CategoryEnum category, Author author, int availableCopies) {
+    public Book(String name, CategoryEnum category, Author author, int copies) {
         this.name = name;
         this.category = category;
         this.author = author;
-        this.availableCopies = availableCopies;
+        this.copies = copies;
+    }
+    public List<String> getAllCategories(){
+        List<String> categories = new ArrayList<>();
+        categories.add("NOVEL");
+        categories.add("THRILLER");
+        categories.add("HISTORY");
+        categories.add("FANTASY");
+        categories.add("BIOGRAPHY");
+        categories.add("CLASSICS");
+        categories.add("DRAMA");
+        return categories;
     }
 }

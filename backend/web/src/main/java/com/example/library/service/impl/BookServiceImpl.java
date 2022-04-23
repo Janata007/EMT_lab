@@ -38,8 +38,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book save(String name, CategoryEnum category, Author author, int availableCopies) {
-        Book book = new Book(name, category, author, availableCopies);
+    public Book save(String name, CategoryEnum category, Author author, int copies) {
+        Book book = new Book(name, category, author, copies);
         return this.bookRepository.save(book);
     }
 
@@ -76,7 +76,7 @@ public class BookServiceImpl implements BookService {
     public Book edit(Long id, Book book) {
         Book book1 = this.bookRepository.findById(id)
             .orElseThrow(() -> new BookNotFoundException(id));
-        book1.setAvailableCopies(book.getAvailableCopies());
+        book1.setCopies(book.getCopies());
         book1.setAuthor(book.getAuthor());
         book1.setCategory(book.getCategory());
         book1.setName(book.getName());

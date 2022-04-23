@@ -3,16 +3,16 @@ package com.example.library.web;
 import com.example.library.models.Book;
 import com.example.library.service.BookService;
 import com.example.library.web.exceptions.BookNotFoundException;
-import java.util.List;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping({"/books", "/"})
+@RequestMapping({"/books", "/api", "/"})
 public class BookController {
     private final BookService bookService;
 
@@ -26,6 +26,13 @@ public class BookController {
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
+    @GetMapping("/categories")
+    public ResponseEntity<List<String>> getAllBookCategories() {
+        Book book = new Book();
+        List<String> categories = book.getAllCategories();
+        return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
+
     @GetMapping("/pagination")
     public List<Book> getAllBooksWithPagination(Pageable pageable) {
         return this.bookService.findAllWithPagination(pageable).getContent();
@@ -35,7 +42,7 @@ public class BookController {
     public ResponseEntity<Book> createBook(@RequestBody Book book) {
         try {
             Book _book =
-                this.bookService.save(book.getName(), book.getCategory(), book.getAuthor(), book.getAvailableCopies());
+                    this.bookService.save(book.getName(), book.getCategory(), book.getAuthor(), book.getCopies());
             return new ResponseEntity<>(book, HttpStatus.OK);
 
         } catch (Exception e) {
@@ -77,7 +84,7 @@ public class BookController {
     public ResponseEntity<Book> markBookAsTaken(@PathVariable("id") long id) {
         try {
             Book book = this.bookService.findById(id).orElseThrow(() -> new BookNotFoundException(id));
-            book.setAvailableCopies(book.getAvailableCopies() - 1);
+            book.setCopies(book.getCopies() - 1);
             this.bookService.saveBook(book);
             return new ResponseEntity<>(book, HttpStatus.NO_CONTENT);
         } catch (Exception e) {

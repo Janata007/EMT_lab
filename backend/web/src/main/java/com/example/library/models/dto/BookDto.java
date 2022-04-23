@@ -13,5 +13,5 @@ public class BookDto {
     private String name;
     private CategoryEnum category;
     private Author author;
-    private int availableCopies;
+    private int copies;
 }

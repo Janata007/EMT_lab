@@ -12,7 +12,7 @@ public interface BookService {
     Optional<Book> findById(Long id);
     List<Book> findAll();
     Page<Book> findAllWithPagination(Pageable pageable);
-    Book save(String name, CategoryEnum category, Author author, int availableCopies);
+    Book save(String name, CategoryEnum category, Author author, int copies);
     Book saveBook(Book book);
     void deleteBookById(Long id);
     List<String> getAllCategories();
