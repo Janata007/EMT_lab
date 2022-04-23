@@ -1,6 +1,7 @@
 package com.example.library.service.impl;
 
 import com.example.library.models.User;
+import com.example.library.models.enums.Role;
 import com.example.library.repository.UserRepository;
 import com.example.library.service.UserService;
 import com.example.library.service.exceptions.InvalidUsernameOrPasswordException;
@@ -10,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.management.relation.Role;
 
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
@@ -26,7 +26,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(s).orElseThrow(() -> new UsernameNotFoundException(s));
     }
 
-
     @Override
     public User register(String username, String password, String repeatPassword, String name, String surname, Role userRole) {
         if (username == null || username.isEmpty() || password == null || password.isEmpty())
@@ -38,5 +37,4 @@ public class UserServiceImpl implements UserService {
         User user = new User(username, passwordEncoder.encode(password), name, surname, userRole);
         return userRepository.save(user);
     }
-
 }

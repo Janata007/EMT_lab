@@ -1,10 +1,10 @@
 package com.example.library.models;
 
+import com.example.library.models.enums.Role;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.management.relation.Role;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
@@ -49,7 +49,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //??
-        return (Collection<? extends GrantedAuthority>) Collections.singletonList(role);
+        return Collections.singletonList(role);
     }
 
     @Override
