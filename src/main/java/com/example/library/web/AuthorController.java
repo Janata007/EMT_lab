@@ -1,9 +1,11 @@
 package com.example.library.web;
 
 import com.example.library.models.Author;
+import com.example.library.models.Book;
 import com.example.library.service.AuthorService;
 import com.example.library.web.exceptions.AuthorNotFoundException;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +29,10 @@ public class AuthorController {
     public ResponseEntity<List<Author>> getAllAuthors() {
         List<Author> authors = this.authorService.findAll();
         return new ResponseEntity<>(authors, HttpStatus.OK);
+    }
+    @GetMapping("/pagination")
+    public List<Author> getAlAuthorsWithPagination(Pageable pageable) {
+        return this.authorService.findAllWithPagination(pageable).getContent();
     }
 
     @PostMapping("/authors")

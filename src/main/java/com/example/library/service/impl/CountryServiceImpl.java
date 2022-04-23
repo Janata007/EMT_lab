@@ -5,6 +5,8 @@ import com.example.library.repository.CountryRepository;
 import com.example.library.service.CountryService;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +25,11 @@ public class CountryServiceImpl implements CountryService {
     @Override
     public List<Country> findAll() {
         return this.countryRepository.findAll();
+    }
+
+    @Override
+    public Page<Country> findAllWithPagination(Pageable pageable) {
+        return  this.countryRepository.findAll(pageable);
     }
 
     @Override

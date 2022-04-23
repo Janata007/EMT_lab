@@ -4,6 +4,7 @@ import com.example.library.models.Country;
 import com.example.library.service.CountryService;
 import com.example.library.web.exceptions.CountryNotFoundException;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +28,11 @@ public class CountryController {
     public ResponseEntity<List<Country>> getAllCountries() {
         List<Country> countries = this.countryService.findAll();
         return new ResponseEntity<>(countries, HttpStatus.OK);
+    }
+
+    @GetMapping("/pagination")
+    public List<Country> getAllCountriesWithPagination(Pageable pageable) {
+        return this.countryService.findAllWithPagination(pageable).getContent();
     }
 
     @PostMapping("/countries")

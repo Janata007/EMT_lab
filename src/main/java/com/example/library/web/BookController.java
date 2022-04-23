@@ -4,12 +4,15 @@ import com.example.library.models.Book;
 import com.example.library.service.BookService;
 import com.example.library.web.exceptions.BookNotFoundException;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +30,11 @@ public class BookController {
     public ResponseEntity<List<Book>> getAllBooks() {
         List<Book> books = this.bookService.findAll();
         return new ResponseEntity<>(books, HttpStatus.OK);
+    }
+
+    @GetMapping("/pagination")
+    public List<Book> getAllBooksWithPagination(Pageable pageable) {
+        return this.bookService.findAllWithPagination(pageable).getContent();
     }
 
     @PostMapping
@@ -64,12 +72,11 @@ public class BookController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteBookById(@PathVariable("id") long id) {
-        try {
-            this.bookService.deleteBookById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        this.bookService.deleteBookById(id);
+        if (this.bookService.findById(id).isEmpty()) {
+            return ResponseEntity.ok().build();
         }
+        return ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/take/{id}")
@@ -79,6 +86,16 @@ public class BookController {
             book.setAvailableCopies(book.getAvailableCopies() - 1);
             this.bookService.saveBook(book);
             return new ResponseEntity<>(book, HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Book> edit(@PathVariable Long id, @RequestBody Book book) {
+        try {
+            Book book1 = this.bookService.edit(id, book);
+            return new ResponseEntity<>(book1, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

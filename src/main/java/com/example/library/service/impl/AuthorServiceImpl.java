@@ -6,6 +6,8 @@ import com.example.library.repository.AuthorRepository;
 import com.example.library.service.AuthorService;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,6 +26,11 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<Author> findAll() {
         return this.authorRepository.findAll();
+    }
+
+    @Override
+    public Page<Author> findAllWithPagination(Pageable pageable) {
+        return this.authorRepository.findAll(pageable);
     }
 
     @Override
