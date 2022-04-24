@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/api")
+@RequestMapping("/authors")
 public class AuthorController {
     private final AuthorService authorService;
 
@@ -20,17 +20,17 @@ public class AuthorController {
         this.authorService = authorService;
     }
 
-    @GetMapping("/authors")
+    @GetMapping
     public ResponseEntity<List<Author>> getAllAuthors() {
         List<Author> authors = this.authorService.findAll();
         return new ResponseEntity<>(authors, HttpStatus.OK);
     }
-    @GetMapping("/authors/pagination")
+    @GetMapping("/pagination")
     public List<Author> getAlAuthorsWithPagination(Pageable pageable) {
         return this.authorService.findAllWithPagination(pageable).getContent();
     }
 
-    @PostMapping("/authors")
+    @PostMapping
     public ResponseEntity<Author> createAuthor(@RequestBody Author author) {
         try {
             Author _author = this.authorService.save(author.getName(), author.getSurname(), author.getCountry());
@@ -42,7 +42,7 @@ public class AuthorController {
         }
     }
 
-    @GetMapping("/authors/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Author> findAuthorById(@PathVariable("id") long id) {
         try {
             Author author = this.authorService.findById(id).orElseThrow(() -> new AuthorNotFoundException(id));
@@ -52,7 +52,7 @@ public class AuthorController {
         }
     }
 
-    @DeleteMapping("/authors/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteAuthorById(@PathVariable("id") long id) {
         try {
             this.authorService.deleteAuthorById(id);

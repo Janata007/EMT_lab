@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping({"/books", "/api", "/"})
+@RequestMapping({"/books", "/"})
 public class BookController {
     private final BookService bookService;
 
@@ -26,12 +26,12 @@ public class BookController {
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
-    @GetMapping("/categories")
-    public ResponseEntity<List<String>> getAllBookCategories() {
-        Book book = new Book();
-        List<String> categories = book.getAllCategories();
-        return new ResponseEntity<>(categories, HttpStatus.OK);
-    }
+//    @GetMapping("/categories")
+//    public ResponseEntity<List<String>> getAllBookCategories() {
+//        Book book = new Book();
+//        List<String> categories = book.getAllCategories();
+//        return new ResponseEntity<>(categories, HttpStatus.OK);
+//    }
 
     @GetMapping("/pagination")
     public List<Book> getAllBooksWithPagination(Pageable pageable) {

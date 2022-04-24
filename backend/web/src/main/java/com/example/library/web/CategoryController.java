@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/api")
+@RequestMapping("/categories")
 public class CategoryController {
     private final BookService bookService;
 
@@ -20,7 +20,7 @@ public class CategoryController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/categories")
+    @GetMapping
     public ResponseEntity<List<String>> getAllCategories() {
         List<String> categories = new ArrayList<>();
         categories = this.bookService.getAllCategories();
