@@ -1,7 +1,10 @@
 package com.example.library.web;
 
+import com.example.library.models.Author;
 import com.example.library.models.Book;
+import com.example.library.service.AuthorService;
 import com.example.library.service.BookService;
+import com.example.library.web.exceptions.AuthorNotFoundException;
 import com.example.library.web.exceptions.BookNotFoundException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -15,9 +18,11 @@ import java.util.List;
 @RequestMapping({"/books", "/"})
 public class BookController {
     private final BookService bookService;
+    private final AuthorService authorService;
 
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, AuthorService authorService) {
         this.bookService = bookService;
+        this.authorService = authorService;
     }
 
     @GetMapping
@@ -26,23 +31,17 @@ public class BookController {
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
-//    @GetMapping("/categories")
-//    public ResponseEntity<List<String>> getAllBookCategories() {
-//        Book book = new Book();
-//        List<String> categories = book.getAllCategories();
-//        return new ResponseEntity<>(categories, HttpStatus.OK);
-//    }
-
     @GetMapping("/pagination")
     public List<Book> getAllBooksWithPagination(Pageable pageable) {
         return this.bookService.findAllWithPagination(pageable).getContent();
     }
 
     @PostMapping
-    public ResponseEntity<Book> createBook(@RequestBody Book book) {
+    public ResponseEntity<Book> createBook(@RequestBody Book book, @RequestParam Long authorId) {
+        Author author = this.authorService.findById(authorId).orElseThrow(() -> new AuthorNotFoundException(authorId));
         try {
             Book _book =
-                    this.bookService.save(book.getName(), book.getCategory(), book.getAuthor(), book.getCopies());
+                    this.bookService.save(book.getName(), book.getCategory(), author, book.getCopies());
             return new ResponseEntity<>(book, HttpStatus.OK);
 
         } catch (Exception e) {

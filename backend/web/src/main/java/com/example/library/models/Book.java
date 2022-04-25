@@ -34,15 +34,4 @@ public class Book {
         this.author = author;
         this.copies = copies;
     }
-    public List<String> getAllCategories(){
-        List<String> categories = new ArrayList<>();
-        categories.add("NOVEL");
-        categories.add("THRILLER");
-        categories.add("HISTORY");
-        categories.add("FANTASY");
-        categories.add("BIOGRAPHY");
-        categories.add("CLASSICS");
-        categories.add("DRAMA");
-        return categories;
-    }
 }

@@ -2,8 +2,11 @@ package com.example.library.web;
 
 import com.example.library.models.Author;
 import com.example.library.models.Book;
+import com.example.library.models.Country;
 import com.example.library.service.AuthorService;
+import com.example.library.service.CountryService;
 import com.example.library.web.exceptions.AuthorNotFoundException;
+import com.example.library.web.exceptions.CountryNotFoundException;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -15,9 +18,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/authors")
 public class AuthorController {
     private final AuthorService authorService;
+    private final CountryService countryService;
 
-    public AuthorController(AuthorService authorService) {
+    public AuthorController(AuthorService authorService, CountryService countryService) {
         this.authorService = authorService;
+        this.countryService = countryService;
     }
 
     @GetMapping
@@ -31,9 +36,11 @@ public class AuthorController {
     }
 
     @PostMapping
-    public ResponseEntity<Author> createAuthor(@RequestBody Author author) {
+    public ResponseEntity<Author> createAuthor(@RequestBody Author author, @RequestParam("countryId") Long countryId) {
+        Country country = this.countryService.findById(countryId).orElseThrow(() -> new CountryNotFoundException(countryId));
+        author.setCountry(country);
         try {
-            Author _author = this.authorService.save(author.getName(), author.getSurname(), author.getCountry());
+            Author _author = this.authorService.save(author.getName(), author.getSurname(), country);
             return new ResponseEntity<>(author, HttpStatus.OK);
 
         } catch (Exception e) {
