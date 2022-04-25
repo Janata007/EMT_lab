@@ -6,6 +6,7 @@ import com.example.library.service.AuthorService;
 import com.example.library.service.BookService;
 import com.example.library.web.exceptions.AuthorNotFoundException;
 import com.example.library.web.exceptions.BookNotFoundException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +33,8 @@ public class BookController {
     }
 
     @GetMapping("/pagination")
-    public List<Book> getAllBooksWithPagination(Pageable pageable) {
-        return this.bookService.findAllWithPagination(pageable).getContent();
+    public Page<Book> getAllBooksWithPagination(Pageable pageable) {
+        return this.bookService.findAllWithPagination(pageable);
     }
 
     @PostMapping
